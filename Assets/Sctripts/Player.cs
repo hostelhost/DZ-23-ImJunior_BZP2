@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour, ITakingDamage
 {
-    [SerializeField] Health _health;
-    [SerializeField] Bag _bag;
+    [SerializeField] private Health _health;
+    [SerializeField] private Bag _bag;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -12,24 +12,25 @@ public class Player : MonoBehaviour, ITakingDamage
             if (collectable is Gold gold)
                 TakeCoin(gold.Execute());
             else if (collectable is AidKit aidKit)
-                _health.TryToAcceptLifeForce(aidKit.Execute());            
-        }         
+                _health.TryToAcceptLifeForce(aidKit.Execute());
+        }
     }
 
     public void TakeDamage(int damage)
     {
         if (_health.TryShortenHealth(damage))
-            IsAlive();
+        {
+            if (IsAlive())
+                DeleteObject();
+        }
     }
 
-    private void TakeCoin(int coin)
-    {
+    private void TakeCoin(int coin) =>   
         _bag.TakeCoin(coin);
-    }
+    
+    private bool IsAlive() =>
+         0 >= _health.LifeForce;
 
-    private void IsAlive()
-    {
-        if (0 >= _health.LifeForce)
-            Destroy(gameObject);
-    }
+    private void DeleteObject() =>    
+        Destroy(gameObject);
 }

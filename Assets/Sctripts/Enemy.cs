@@ -6,13 +6,16 @@ public class Enemy : MonoBehaviour, ITakingDamage
 
     public void TakeDamage(int damage)
     {
-        if (_health.TryShortenHealth(damage))     
-            IsAlive();
+        if (_health.TryShortenHealth(damage))
+        {
+            if (IsAlive())
+                DeleteObject();
+        }
     }
 
-    private void IsAlive()
-    {
-        if (0 >= _health.LifeForce)
-            Destroy(gameObject);
-    }
+    private bool IsAlive() =>
+         0 >= _health.LifeForce;
+
+    private void DeleteObject() =>
+        Destroy(gameObject);
 }

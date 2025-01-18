@@ -16,7 +16,7 @@ public class Health : MonoBehaviour
 
     public bool TryShortenHealth(int damage)
     {
-        if (CheckerIncomingHealth(damage))
+        if (IsCorrectValue(damage))
         {
             LifeForce -= damage;
             HealthHasChanged?.Invoke();
@@ -28,7 +28,7 @@ public class Health : MonoBehaviour
 
     public void TryToAcceptLifeForce(int lifeForce)
     {
-        if (CheckerIncomingHealth(lifeForce))
+        if (IsCorrectValue(lifeForce))
         {
             if (_maximumLifeForce <= lifeForce + LifeForce)
                 LifeForce = _maximumLifeForce;
@@ -42,6 +42,6 @@ public class Health : MonoBehaviour
     public int GetMaximumLifeForce() =>
          _maximumLifeForce;
 
-    private bool CheckerIncomingHealth(int Incoming) =>
+    private bool IsCorrectValue(int Incoming) =>
            Incoming > 0;
 }
